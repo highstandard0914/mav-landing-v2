@@ -114,7 +114,11 @@
     overflow-x:auto;
     scroll-snap-type:x proximity;
     -webkit-overflow-scrolling:touch;
-    touch-action:pan-y pinch-zoom;
+    /* pan-x, not pan-y — this tells the browser to handle horizontal
+       drags natively as scrolling THIS element. pan-y would do the
+       opposite: hand vertical drags to the page and leave horizontal
+       swipes unclaimed, which is what was blocking touch swipe here. */
+    touch-action:pan-x;
     gap:14px;
     padding:4px 6vw 14px;
     scrollbar-width:none;
