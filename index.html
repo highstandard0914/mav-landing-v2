@@ -48,18 +48,43 @@
     transition:opacity 1.1s ease, transform 1.1s ease;
   }
   .intro-logo.is-visible { opacity:1; transform:scale(1); }
-  .intro-bar {
-    width:0; height:1px; background:rgba(255,255,255,0.35);
-    margin-top:16px;
-    transition:width 1.5s cubic-bezier(.4,0,.2,1);
+  /* intro-bar removed */
+
+  /* ============ STICKY TOP NAV ============ */
+  .top-nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(0,0,0,0.06);
+    overflow-x:auto; scrollbar-width:none;
   }
-  .intro-bar.is-visible { width:44px; }
+  .top-nav::-webkit-scrollbar { display:none; }
+  .top-nav-btn {
+    flex-shrink:0;
+    display:flex; align-items:center; gap:5px;
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px; font-weight:500;
+    white-space:nowrap;
+    border:1.5px solid var(--ink);
+    background:none; color:var(--ink);
+    cursor:pointer;
+  }
+  .top-nav-btn.primary {
+    background:var(--green); color:#fff; border-color:var(--green);
+    font-weight:600;
+  }
+  .top-nav-btn:active { opacity:0.75; }
+  .top-nav-btn svg { width:14px; height:14px; flex-shrink:0; }
 
   /* ============ HERO ============ */
   .hero {
     position:relative;
-    min-height:92vh;
-    min-height:92svh;
+    min-height:100vh;
+    min-height:100svh;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -341,8 +366,23 @@
 <!-- Cinematic intro -->
 <div class="intro" id="intro">
   <span class="intro-logo" id="introLogo">MAV STUDIO</span>
-  <div class="intro-bar" id="introBar"></div>
 </div>
+
+<!-- Sticky top nav -->
+<nav class="top-nav">
+  <a href="https://booking.naver.com/booking/13/bizes/1664963" target="_blank" rel="noopener" class="top-nav-btn primary">
+    <svg viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 6.5h14" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 1.5v3M12.5 1.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    쇼룸 예약하기
+  </a>
+  <a href="http://pf.kakao.com/_xnxmHxhxb/chat" target="_blank" rel="noopener" class="top-nav-btn">
+    <svg viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 4.47 2 7.5c0 1.9 1.12 3.58 2.84 4.63L4 16l3.5-2.04c.49.08.99.12 1.5.12 3.87 0 7-2.47 7-5.5S12.87 2 9 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    실시간 상담
+  </a>
+  <a href="https://mavstudio.co.kr" target="_blank" rel="noopener" class="top-nav-btn">
+    <svg viewBox="0 0 18 18" fill="none"><rect x="3" y="5" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M6 5V4a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    쇼핑몰 바로가기
+  </a>
+</nav>
 
 <section class="hero">
   <video class="hero-video" autoplay muted loop playsinline>
@@ -527,16 +567,14 @@
   (function() {
     const intro = document.getElementById('intro');
     const logo  = document.getElementById('introLogo');
-    const bar   = document.getElementById('introBar');
 
     // Prevent scroll while intro is visible
     document.body.style.overflow = 'hidden';
 
-    // Step 1: fade in logo + bar
+    // Step 1: fade in logo
     requestAnimationFrame(() => {
       setTimeout(() => {
         logo.classList.add('is-visible');
-        bar.classList.add('is-visible');
       }, 200);
     });
 
