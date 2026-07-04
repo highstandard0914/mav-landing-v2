@@ -557,6 +557,11 @@
 </div>
 
 <script>
+  // Force fresh version via cache-busting param
+  if (!location.search.includes('v=')) {
+    location.replace(location.pathname + '?v=5');
+  }
+
   // ---- Cinematic intro ----
   (function() {
     const intro = document.getElementById('intro');
