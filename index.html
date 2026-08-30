@@ -694,8 +694,8 @@
 
 <script>
   // Force fresh version via cache-busting param
-  if (location.search !== '?v=12') {
-    location.replace(location.pathname + '?v=12');
+  if (location.search !== '?v=13') {
+    location.replace(location.pathname + '?v=13');
   }
 
   // ---- Cinematic intro ----
@@ -769,6 +769,16 @@
       const targetCenterY = target.top + target.height / 2;
       const dx = targetCenterX - window.innerWidth / 2;
       const dy = targetCenterY - window.innerHeight / 2;
+
+      // The ctaZoomIn animation is still holding transform/opacity (fill:forwards),
+      // which has higher cascade priority than inline styles/transitions and would
+      // silently block the fly move below. Freeze its current visual result as
+      // inline styles, cancel the animation, then force a reflow so the browser
+      // treats the frozen state as the transition's start point.
+      fly.style.animation = 'none';
+      fly.style.opacity = '1';
+      fly.style.transform = 'translate(-50%,-50%) scale(1)';
+      void fly.offsetWidth;
 
       fly.classList.add('is-flying');
       fly.style.padding = targetStyle.padding;
