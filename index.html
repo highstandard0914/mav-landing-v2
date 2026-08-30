@@ -65,7 +65,7 @@
     pointer-events:auto;
     width:100%; max-width:430px; margin:0 auto;
     display:flex; align-items:flex-start; justify-content:space-between;
-    padding:38px 6vw 20px;
+    padding:52px 6vw 20px;
   }
   @keyframes navIn { to{ opacity:1; transform:translateY(0); } }
   .nav-logo {
@@ -287,11 +287,12 @@
     overflow-x:auto;
     scroll-snap-type:x proximity;
     -webkit-overflow-scrolling:touch;
-    /* pan-x, not pan-y — this tells the browser to handle horizontal
-       drags natively as scrolling THIS element. pan-y would do the
-       opposite: hand vertical drags to the page and leave horizontal
-       swipes unclaimed, which is what was blocking touch swipe here. */
-    touch-action:pan-x;
+    /* pan-x AND pan-y — let the browser natively disambiguate the drag
+       direction: horizontal drags scroll this element, vertical drags
+       pass through to scroll the page. pan-x alone claimed the touch
+       gesture outright and blocked page scroll from starting inside
+       this box. */
+    touch-action:pan-x pan-y;
     gap:14px;
     padding:4px 6vw 14px;
     scrollbar-width:none;
@@ -719,8 +720,8 @@
 
 <script>
   // Force fresh version via cache-busting param
-  if (location.search !== '?v=18') {
-    location.replace(location.pathname + '?v=18');
+  if (location.search !== '?v=19') {
+    location.replace(location.pathname + '?v=19');
   }
 
   // ---- Cinematic intro ----
