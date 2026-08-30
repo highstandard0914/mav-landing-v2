@@ -694,8 +694,8 @@
 
 <script>
   // Force fresh version via cache-busting param
-  if (location.search !== '?v=13') {
-    location.replace(location.pathname + '?v=13');
+  if (location.search !== '?v=14') {
+    location.replace(location.pathname + '?v=14');
   }
 
   // ---- Cinematic intro ----
@@ -760,15 +760,21 @@
     setTimeout(() => {
       const target = navReserve.getBoundingClientRect();
       const targetStyle = window.getComputedStyle(navReserve);
+      const flyRect = fly.getBoundingClientRect();
 
-      // Pure-transform move (no top/left animation) so the browser can run this
-      // entirely on the compositor thread — mixing a layout-triggering top/left
-      // transition with a transform transition on the same element was the
-      // source of the subtle jitter during landing.
+      // Pure-transform move in plain pixels (no top/left animation, no calc()
+      // mixing % and px inside transform) so this runs entirely on the
+      // compositor thread and interpolates smoothly on every browser — some
+      // mobile browsers don't tween mixed-unit calc() transforms cleanly and
+      // render a small snap/bounce right at the end of the transition.
+      const viewportCenterX = window.innerWidth / 2;
+      const viewportCenterY = window.innerHeight / 2;
       const targetCenterX = target.left + target.width / 2;
       const targetCenterY = target.top + target.height / 2;
-      const dx = targetCenterX - window.innerWidth / 2;
-      const dy = targetCenterY - window.innerHeight / 2;
+      const startTx = -(flyRect.width / 2);
+      const startTy = -(flyRect.height / 2);
+      const endTx = targetCenterX - viewportCenterX - target.width / 2;
+      const endTy = targetCenterY - viewportCenterY - target.height / 2;
 
       // The ctaZoomIn animation is still holding transform/opacity (fill:forwards),
       // which has higher cascade priority than inline styles/transitions and would
@@ -777,7 +783,7 @@
       // treats the frozen state as the transition's start point.
       fly.style.animation = 'none';
       fly.style.opacity = '1';
-      fly.style.transform = 'translate(-50%,-50%) scale(1)';
+      fly.style.transform = `translate(${startTx}px, ${startTy}px) scale(1)`;
       void fly.offsetWidth;
 
       fly.classList.add('is-flying');
@@ -785,7 +791,7 @@
       fly.style.fontSize = targetStyle.fontSize;
       fly.style.borderRadius = targetStyle.borderRadius;
       fly.style.gap = targetStyle.gap;
-      fly.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1)`;
+      fly.style.transform = `translate(${endTx}px, ${endTy}px) scale(1)`;
 
       const navConsult = document.getElementById('navConsult');
       const navReview = document.getElementById('navReview');
