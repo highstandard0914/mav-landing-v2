@@ -53,100 +53,42 @@
   /* ============ STICKY TOP NAV ============ */
   .top-nav {
     position:fixed; top:0; left:0; right:0; z-index:100;
-    display:flex; justify-content:center;
-    pointer-events:none;
-    transition:transform 0.4s cubic-bezier(.16,1,.3,1), opacity 0.4s ease;
+    display:flex; flex-direction:row; align-items:stretch; gap:6px;
+    padding:12px 4vw;
+    padding-top:calc(12px + env(safe-area-inset-top, 0px));
+    background:transparent;
+    transition:transform 0.35s ease, opacity 0.35s ease;
   }
   .top-nav.is-hidden {
-    transform:translateY(-120%);
-    opacity:0;
-  }
-  .top-nav-inner {
-    pointer-events:auto;
-    width:100%; max-width:430px; margin:0 auto;
-    display:flex; align-items:flex-start; justify-content:space-between;
-    padding:52px 6vw 20px;
-  }
-  @keyframes navIn { to{ opacity:1; transform:translateY(0); } }
-  .nav-logo {
-    font-family:'Cormorant Garamond', serif;
-    font-weight:600;
-    font-size:14.5px;
-    letter-spacing:0.32em;
-    color:#fff;
-    text-shadow:0 1px 8px rgba(0,0,0,0.35);
-    display:inline-block;
-    opacity:0; transform:translateY(-14px);
-    animation:navIn .9s cubic-bezier(.16,1,.3,1) forwards;
-    animation-delay:2.7s;
-  }
-  .nav-actions {
-    display:flex; flex-direction:column; align-items:flex-end; gap:9px;
-  }
-  .nav-reserve, .nav-mini {
-    display:inline-flex; align-items:center; justify-content:center; gap:7px;
-    width:156px;
-    padding:13px 20px;
-    border-radius:999px;
-    font-size:14px; font-weight:700;
-    white-space:nowrap;
-    border:1.5px solid rgba(255,255,255,0.65);
-    background:rgba(26,23,20,0.4);
-    -webkit-backdrop-filter:blur(8px);
-    backdrop-filter:blur(8px);
-    color:#fff;
-    box-shadow:0 4px 14px rgba(0,0,0,0.15);
-  }
-  .nav-reserve svg, .nav-mini svg { width:1.12em; height:1.12em; flex-shrink:0; }
-  .nav-reserve {
-    transition:transform .2s ease, background .3s ease, opacity .35s ease;
-    opacity:0;
-  }
-  .nav-reserve.is-landed { opacity:1; }
-  .nav-reserve:active { transform:scale(0.96); }
-
-  .nav-mini {
-    opacity:0; transform:translateY(-8px);
-    transition:opacity .45s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1), background .3s ease;
-    pointer-events:none;
-  }
-  .nav-mini.is-visible { opacity:1; transform:translateY(0); pointer-events:auto; }
-  .nav-mini:active { transform:scale(0.95); }
-
-  /* ============ CTA FLY (center zoom-in -> nav landing) ============ */
-  .cta-fly {
-    position:fixed; z-index:150;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%) scale(0.85);
-    display:inline-flex; align-items:center; gap:9px;
-    padding:18px 34px;
-    border-radius:999px;
-    font-size:16px; font-weight:700;
-    white-space:nowrap;
-    border:1.5px solid rgba(255,255,255,0.65);
-    background:rgba(26,23,20,0.55);
-    -webkit-backdrop-filter:blur(10px);
-    backdrop-filter:blur(10px);
-    color:#fff;
-    box-shadow:0 14px 34px rgba(0,0,0,0.3);
+    transform:translateY(-16px);
     opacity:0;
     pointer-events:none;
   }
-  .cta-fly svg { width:1.12em; height:1.12em; flex-shrink:0; }
-  .cta-fly.is-zoomed {
-    animation:ctaZoomIn .6s cubic-bezier(.16,1,.3,1) forwards;
+  .top-nav-btn {
+    flex:1 1 0; min-width:0;
+    display:flex; align-items:center; justify-content:center; gap:4px;
+    padding:10px 6px;
+    border-radius:999px;
+    font-size:12.5px; font-weight:600; letter-spacing:-0.01em;
+    white-space:nowrap;
+    border:1px solid rgba(26,23,20,0.14);
+    background:rgba(255,255,255,0.62);
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    color:var(--ink);
+    cursor:pointer;
   }
-  @keyframes ctaZoomIn {
-    from{ opacity:0; transform:translate(-50%,-50%) scale(0.85); }
-    to{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+  .top-nav-btn.primary {
+    flex:1.25 1 0;
+    background:var(--green); color:#fff; border-color:var(--green);
   }
-  .cta-fly.is-flying {
-    will-change:transform;
-    justify-content:center;
-    transition:transform .8s cubic-bezier(.16,1,.3,1), padding .8s cubic-bezier(.16,1,.3,1),
-      font-size .8s cubic-bezier(.16,1,.3,1), gap .8s cubic-bezier(.16,1,.3,1),
-      width .8s cubic-bezier(.16,1,.3,1), opacity .8s cubic-bezier(.16,1,.3,1);
+  .top-nav-btn:active { opacity:0.75; }
+  .top-nav-btn svg { width:13px; height:13px; flex-shrink:0; }
+  @media (max-width:350px){
+    .top-nav-btn { font-size:11.5px; padding:9px 4px; }
+    .top-nav-btn svg { display:none; }
   }
+
+  .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
   /* ============ HERO ============ */
   .hero {
@@ -158,66 +100,37 @@
   .hero-video {
     position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:42% center; z-index:0;
     filter:saturate(1.3) contrast(1.05);
-    transform:scale(1.12);
-    animation:heroZoom 9s cubic-bezier(.16,1,.3,1) forwards;
-    animation-delay:0.3s;
   }
-  @keyframes heroZoom { to{ transform:scale(1); } }
   .hero::after{
     content:''; position:absolute; inset:0; z-index:1;
-    background:linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.06) 35%, rgba(0,0,0,0.58) 100%);
+    background:linear-gradient(180deg, rgba(239,234,226,0.45) 0%, rgba(239,234,226,0.18) 30%, rgba(0,0,0,0) 55%);
   }
   .hero-info {
     position:absolute; z-index:2;
-    left:6vw; bottom:48px;
+    left:6vw; top:28px;
     text-align:left;
-  }
-  .hero-eyebrow {
-    display:block;
-    font-family:'Cormorant Garamond', serif;
-    font-style:italic; font-weight:500;
-    font-size:12.5px; letter-spacing:0.2em; text-transform:uppercase;
-    color:rgba(255,255,255,0.78);
-    margin-bottom:14px;
-    opacity:0; transform:translateY(14px);
-    animation:fadeUp .9s cubic-bezier(.16,1,.3,1) forwards;
-    animation-delay:2.65s;
   }
   .hero-title {
     font-size:7.6vw;
     font-weight:700;
     letter-spacing:-0.02em;
     line-height:1.32;
-    color:#fff;
-    text-shadow:0 2px 10px rgba(0,0,0,0.35);
+    color:var(--ink);
+    text-shadow:0 1px 8px rgba(255,255,255,0.35);
     word-break:keep-all;
   }
-  .title-line {
-    display:inline-block;
-    opacity:0; transform:translateY(24px);
-    animation:fadeUp 1s cubic-bezier(.16,1,.3,1) forwards;
-  }
-  .hero-title .title-line:nth-child(1){ animation-delay:2.85s; }
-  .hero-title .title-line:nth-child(3){ animation-delay:3.0s; }
-  @keyframes fadeUp { to{ opacity:1; transform:translateY(0); } }
   .hero-divider {
-    width:0; height:1px; background:rgba(255,255,255,0.6);
+    width:32px; height:1px; background:rgba(26,23,20,0.55);
     margin:12px 0;
-    animation:growLine .8s cubic-bezier(.16,1,.3,1) forwards;
-    animation-delay:3.15s;
   }
-  @keyframes growLine { to{ width:32px; } }
   .hero-sub {
     margin-top:0;
     font-size:3.6vw;
     font-weight:400;
-    color:rgba(255,255,255,0.88);
+    color:rgba(26,23,20,0.78);
     line-height:1.5;
-    text-shadow:0 2px 8px rgba(0,0,0,0.3);
+    text-shadow:0 1px 6px rgba(255,255,255,0.35);
     word-break:keep-all;
-    opacity:0; transform:translateY(16px);
-    animation:fadeUp 1s cubic-bezier(.16,1,.3,1) forwards;
-    animation-delay:3.3s;
   }
   .hero-cta {
     display:flex; align-items:center; justify-content:center; gap:8px;
@@ -235,26 +148,6 @@
   }
   .hero-cta:active { transform:scale(0.98); }
   .hero-cta svg { width:18px; height:18px; flex-shrink:0; }
-
-  .scroll-hint {
-    position:absolute; z-index:2;
-    right:6vw; bottom:28px;
-    color:rgba(255,255,255,0.85);
-    cursor:pointer;
-    opacity:0;
-    animation:scrollHintIn .9s cubic-bezier(.16,1,.3,1) forwards 3.6s,
-      scrollHintPulse 1.6s ease-in-out infinite 4.5s;
-  }
-  /* visibility (not animation/opacity) drives the toggle — the pulse keeps
-     running underneath so re-showing it never has to replay the 3.6s/4.5s
-     entrance delay, it just reappears mid-pulse instantly. */
-  .scroll-hint.is-hidden { visibility:hidden; }
-  .scroll-hint svg { width:20px; height:20px; display:block; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
-  @keyframes scrollHintIn { to{ opacity:0.85; } }
-  @keyframes scrollHintPulse {
-    0%, 100% { transform:translateY(0); opacity:0.5; }
-    50% { transform:translateY(6px); opacity:1; }
-  }
 
   /* ============ STATEMENT ============ */
   .statement {
@@ -287,12 +180,11 @@
     overflow-x:auto;
     scroll-snap-type:x proximity;
     -webkit-overflow-scrolling:touch;
-    /* pan-x AND pan-y — let the browser natively disambiguate the drag
-       direction: horizontal drags scroll this element, vertical drags
-       pass through to scroll the page. pan-x alone claimed the touch
-       gesture outright and blocked page scroll from starting inside
-       this box. */
-    touch-action:pan-x pan-y;
+    /* pan-x, not pan-y — this tells the browser to handle horizontal
+       drags natively as scrolling THIS element. pan-y would do the
+       opposite: hand vertical drags to the page and leave horizontal
+       swipes unclaimed, which is what was blocking touch swipe here. */
+    touch-action:pan-x;
     gap:14px;
     padding:4px 6vw 14px;
     scrollbar-width:none;
@@ -462,24 +354,12 @@
     width:100%; margin-top:10px;
     padding:16px 20px; min-height:52px;
     background:transparent; color:var(--ink);
-    border:1px solid rgba(26,23,20,0.3);
+    border:1px solid var(--ink);
     font-size:14.5px; font-weight:600; letter-spacing:0.2px;
     border-radius:999px;
   }
   .kakao-cta:active{ opacity:0.7; }
   .kakao-cta svg{ width:17px; height:17px; }
-
-  .review-cta {
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    width:100%; margin-top:10px;
-    padding:16px 20px; min-height:52px;
-    background:transparent; color:var(--ink);
-    border:1px solid rgba(26,23,20,0.3);
-    font-size:14.5px; font-weight:600; letter-spacing:0.2px;
-    border-radius:999px;
-  }
-  .review-cta:active{ opacity:0.7; }
-  .review-cta svg{ width:16px; height:16px; }
 
   footer {
     display:flex; justify-content:space-between; align-items:center;
@@ -490,7 +370,9 @@
 
   @media (min-width:431px){
     body{ max-width:430px; margin:0 auto; }
-    .top-nav{ right:calc(50vw - 215px); }
+    /* vw units follow the full window on desktop; pin everything to the 430px column */
+    .top-nav { left:calc(50% - 215px); right:calc(50% - 215px); padding:12px 16px; }
+    .intro-logo { font-size:24px; }
   }
 </style>
 </head>
@@ -502,45 +384,26 @@
 </div>
 
 <!-- Sticky top nav -->
-<nav class="top-nav" id="topNav">
-  <div class="top-nav-inner">
-    <span class="nav-logo">MAV STUDIO</span>
-    <div class="nav-actions">
-      <a href="https://booking.naver.com/booking/13/bizes/1664963" target="_blank" rel="noopener" class="nav-reserve">
-        <svg viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 6.5h14" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 1.5v3M12.5 1.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        쇼룸 예약하기
-      </a>
-      <a href="http://pf.kakao.com/_lpfxixl" target="_blank" rel="noopener" class="nav-mini" id="navConsult">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 4.47 2 7.5c0 1.9 1.12 3.58 2.84 4.63L4 16l3.5-2.04c.49.08.99.12 1.5.12 3.87 0 7-2.47 7-5.5S12.87 2 9 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-        실시간 상담
-      </a>
-      <a href="https://mav-studio.co.kr/board/product2/list.html?board=no_4" target="_blank" rel="noopener" class="nav-mini" id="navReview">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M9 1.5l2.1 4.4 4.85.7-3.5 3.42.83 4.83L9 12.6l-4.28 2.25.83-4.83L2.05 6.6l4.85-.7L9 1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-        REVIEW
-      </a>
-    </div>
-  </div>
+<nav class="top-nav">
+  <a href="https://booking.naver.com/booking/13/bizes/1664963" target="_blank" rel="noopener" class="top-nav-btn primary">
+    <svg viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 6.5h14" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 1.5v3M12.5 1.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    쇼룸 예약
+  </a>
+  <a href="http://pf.kakao.com/_xnxmHxhxb/chat" target="_blank" rel="noopener" class="top-nav-btn">
+    <svg viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 4.47 2 7.5c0 1.9 1.12 3.58 2.84 4.63L4 16l3.5-2.04c.49.08.99.12 1.5.12 3.87 0 7-2.47 7-5.5S12.87 2 9 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    실시간 상담
+  </a>
+  <a href="https://mav-studio.co.kr/board/product2/list.html?board=no_4" target="_blank" rel="noopener" class="top-nav-btn">
+    <svg viewBox="0 0 18 18" fill="none"><path d="M9 1.5l2.1 4.4 4.85.7-3.5 3.42.83 4.83L9 12.6l-4.28 2.25.83-4.83L2.05 6.6l4.85-.7L9 1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    REVIEW
+  </a>
 </nav>
-
-<!-- CTA fly: center zoom-in, then lands on the top-nav reserve button -->
-<div class="cta-fly" id="ctaFly">
-  <svg viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 6.5h14" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 1.5v3M12.5 1.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-  쇼룸 예약하기
-</div>
 
 <section class="hero">
   <video class="hero-video" autoplay muted loop playsinline>
-    <source src="videos/hero-comfort.mp4" type="video/mp4">
+    <source src="videos/hero-final.mp4" type="video/mp4">
   </video>
-  <div class="hero-info">
-    <span class="hero-eyebrow">Custom Furniture</span>
-    <h1 class="hero-title"><span class="title-line">10년을 함께할</span><br><span class="title-line">맞춤 제작 소파</span></h1>
-    <div class="hero-divider"></div>
-    <p class="hero-sub">내 취향이 묻어나는 공간의 완성,<br>일상에 자연스럽게 스며드는 가구를 만듭니다.</p>
-  </div>
-  <div class="scroll-hint" id="scrollHint">
-    <svg viewBox="0 0 20 20" fill="none"><path d="M4 7.5L10 13.5L16 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
+  <h1 class="sr-only">MAV STUDIO 맞춤 제작 소파</h1>
 </section>
 
 <section class="statement">
@@ -673,7 +536,7 @@
   <div class="dots" id="dots"></div>
 </section>
 
-<section class="reserve" id="reserveSection">
+<section class="reserve">
   <div class="eyebrow">Reservation</div>
   <h2>방문 상담 예약</h2>
   <p class="reserve-sub">쇼룸에서 원단과 마감을 직접 확인하고<br>나만의 소파를 상담받아보세요.</p>
@@ -693,11 +556,6 @@
 
   <a href="http://pf.kakao.com/_lpfxixl" target="_blank" rel="noopener" class="kakao-cta">
     <span>💬 실시간 카톡 상담하기</span>
-  </a>
-
-  <a href="https://mav-studio.co.kr/board/product2/list.html?board=no_4" target="_blank" rel="noopener" class="review-cta">
-    <svg viewBox="0 0 18 18" fill="none"><path d="M9 1.5l2.1 4.4 4.85.7-3.5 3.42.83 4.83L9 12.6l-4.28 2.25.83-4.83L2.05 6.6l4.85-.7L9 1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-    <span>REVIEW 후기 보기</span>
   </a>
 </section>
 
@@ -720,8 +578,8 @@
 
 <script>
   // Force fresh version via cache-busting param
-  if (location.search !== '?v=19') {
-    location.replace(location.pathname + '?v=19');
+  if (location.search !== '?v=9') {
+    location.replace(location.pathname + '?v=9');
   }
 
   // ---- Cinematic intro ----
@@ -746,106 +604,32 @@
     }, 2600);
   })();
 
-  // ---- Top nav: stay visible through the hero, fade out once the next section arrives ----
+  // ---- Top nav: hide on scroll down, show on scroll up ----
   (function() {
     const nav = document.querySelector('.top-nav');
-    const hero = document.querySelector('.hero');
-    const scrollHint = document.getElementById('scrollHint');
-    if (!nav || !hero) return;
+    if (!nav) return;
+    let lastY = window.scrollY;
     let ticking = false;
-
-    const update = () => {
-      if (window.__ctaFlyInProgress) { ticking = false; return; }
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      const pastHero = heroBottom < window.innerHeight * 0.32;
-      nav.classList.toggle('is-hidden', pastHero);
-      if (scrollHint) scrollHint.classList.toggle('is-hidden', pastHero);
-      ticking = false;
-    };
 
     window.addEventListener('scroll', () => {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(update);
-    }, { passive: true });
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const delta = y - lastY;
 
-    if (scrollHint) {
-      scrollHint.addEventListener('click', () => {
-        const next = hero.nextElementSibling;
-        if (next) next.scrollIntoView({ behavior: 'smooth' });
+        if (y < 80) {
+          nav.classList.remove('is-hidden');
+        } else if (delta > 4) {
+          nav.classList.add('is-hidden');
+        } else if (delta < -4) {
+          nav.classList.remove('is-hidden');
+        }
+
+        lastY = y;
+        ticking = false;
       });
-    }
-  })();
-
-  // ---- CTA fly: center zoom-in, then fly to the top-nav reserve slot ----
-  (function() {
-    const fly = document.getElementById('ctaFly');
-    const navReserve = document.querySelector('.nav-reserve');
-    if (!fly || !navReserve) return;
-
-    window.__ctaFlyInProgress = true;
-
-    setTimeout(() => {
-      fly.classList.add('is-zoomed');
-    }, 2900);
-
-    setTimeout(() => {
-      const target = navReserve.getBoundingClientRect();
-      const targetStyle = window.getComputedStyle(navReserve);
-      const flyRect = fly.getBoundingClientRect();
-
-      // Pure-transform move in plain pixels (no top/left animation, no calc()
-      // mixing % and px inside transform) so this runs entirely on the
-      // compositor thread and interpolates smoothly on every browser — some
-      // mobile browsers don't tween mixed-unit calc() transforms cleanly and
-      // render a small snap/bounce right at the end of the transition.
-      const viewportCenterX = window.innerWidth / 2;
-      const viewportCenterY = window.innerHeight / 2;
-      const targetCenterX = target.left + target.width / 2;
-      const targetCenterY = target.top + target.height / 2;
-      const startTx = -(flyRect.width / 2);
-      const startTy = -(flyRect.height / 2);
-      const endTx = targetCenterX - viewportCenterX - target.width / 2;
-      const endTy = targetCenterY - viewportCenterY - target.height / 2;
-
-      // The ctaZoomIn animation is still holding transform/opacity (fill:forwards),
-      // which has higher cascade priority than inline styles/transitions and would
-      // silently block the fly move below. Freeze its current visual result as
-      // inline styles, cancel the animation, then force a reflow so the browser
-      // treats the frozen state as the transition's start point.
-      fly.style.animation = 'none';
-      fly.style.opacity = '1';
-      fly.style.width = flyRect.width + 'px';
-      fly.style.transform = `translate(${startTx}px, ${startTy}px) scale(1)`;
-      void fly.offsetWidth;
-
-      fly.classList.add('is-flying');
-      fly.style.padding = targetStyle.padding;
-      fly.style.fontSize = targetStyle.fontSize;
-      fly.style.borderRadius = targetStyle.borderRadius;
-      fly.style.gap = targetStyle.gap;
-      fly.style.width = targetStyle.width;
-      fly.style.transform = `translate(${endTx}px, ${endTy}px) scale(1)`;
-
-      const navConsult = document.getElementById('navConsult');
-      const navReview = document.getElementById('navReview');
-
-      const finishLanding = () => {
-        // Crossfade fly -> real button (avoids a blink where neither is visible)
-        navReserve.classList.add('is-landed');
-        fly.style.transition = 'opacity .35s ease';
-        fly.style.opacity = '0';
-        setTimeout(() => {
-          fly.style.display = 'none';
-          window.__ctaFlyInProgress = false;
-        }, 360);
-
-        if (navConsult) setTimeout(() => navConsult.classList.add('is-visible'), 200);
-        if (navReview) setTimeout(() => navReview.classList.add('is-visible'), 380);
-      };
-      fly.addEventListener('transitionend', finishLanding, { once: true });
-      setTimeout(finishLanding, 1200);
-    }, 4100);
+    }, { passive: true });
   })();
 
   // ---- Enforce card order: Stone → Bubble → Round → Box → Wood ----
