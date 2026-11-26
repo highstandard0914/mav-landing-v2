@@ -510,7 +510,7 @@
 </nav>
 
 <section class="hero">
-  <video class="hero-video" autoplay muted loop playsinline>
+  <video class="hero-video" muted loop playsinline preload="auto">
     <source src="videos/hero-final.mp4" type="video/mp4">
   </video>
   <h1 class="sr-only">MAV STUDIO 맞춤 제작 소파</h1>
@@ -733,44 +733,60 @@
     // Step 2: after 2.4s, fade out intro overlay
     setTimeout(() => {
       intro.classList.add('is-hidden');
+      window.dispatchEvent(new Event('introdone'));
       document.body.style.overflow = '';
     }, 2600);
   })();
 
 
-  // ---- Hero sound: try autoplay with audio; if the browser blocks it,
-  //      stay muted and turn the sound on at the visitor's first tap/key ----
+  // ---- Hero video + sound ----
+  // The video is held at frame 0 behind the intro and only starts when the
+  // intro lifts, so the first scene plays in full. It tries to play with sound;
+  // if the browser blocks that, it plays muted and turns the sound on at the
+  // visitor's first tap/key.
   (function() {
     const video = document.querySelector('.hero-video');
     if (!video) return;
     const events = ['pointerdown', 'touchend', 'click', 'keydown'];
-    let done = false;
+    let started = false;     // intro finished and playback requested
+    let soundOn = false;     // audio is actually unmuted and playing
+    let wantSound = false;   // visitor tapped before the intro finished
 
-    function finish() {
-      done = true;
-      events.forEach(e => window.removeEventListener(e, unmuteOnGesture, true));
+    function stopListening() {
+      events.forEach(e => window.removeEventListener(e, onGesture, true));
     }
-    function unmuteOnGesture() {
-      if (done) return;
+    function onGesture() {
+      if (soundOn) return stopListening();
+      if (!started) { wantSound = true; return; }
       video.muted = false;
       video.volume = 1;
       const p = video.play();
-      if (p && p.catch) p.catch(() => { video.muted = true; });
-      finish();
+      if (p && p.then) {
+        p.then(() => { soundOn = true; stopListening(); })
+         .catch(() => { video.muted = true; video.play().catch(() => {}); });
+      }
     }
+    events.forEach(e => window.addEventListener(e, onGesture, true));
 
-    // 1) Try right away with sound
-    video.muted = false;
-    video.volume = 1;
-    const attempt = video.play();
-    if (attempt && attempt.then) {
-      attempt.then(finish).catch(() => {
-        // 2) Blocked: fall back to muted autoplay + unmute on first gesture
+    function startHero() {
+      if (started) return;
+      started = true;
+      try { video.currentTime = 0; } catch (e) {}
+      video.muted = false;
+      video.volume = 1;
+      const attempt = video.play();
+      const fallback = () => {
         video.muted = true;
         video.play().catch(() => {});
-        events.forEach(e => window.addEventListener(e, unmuteOnGesture, true));
-      });
+        if (wantSound) onGesture();
+      };
+      if (attempt && attempt.then) {
+        attempt.then(() => { soundOn = true; stopListening(); }).catch(fallback);
+      }
     }
+    window.addEventListener('introdone', startHero);
+    // Safety net: never leave the hero frozen if the event is missed
+    setTimeout(startHero, 4500);
   })();
 
   // ---- Top nav: hide on scroll down, show on scroll up ----
