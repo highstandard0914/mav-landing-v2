@@ -368,10 +368,127 @@
   }
   footer .mark { font-family:'Cormorant Garamond',serif; font-size:14px; letter-spacing:2px; color:var(--ink); }
 
+  /* =====================================================================
+     REFINED LAYER — quieter, hairline-based, more whitespace
+     ===================================================================== */
+  :root{ --line:rgba(26,23,20,0.10); --ink-soft:#4a433c; }
+
+  /* Top bar: slimmer pills, no heavy borders */
+  .top-nav{ gap:6px; padding-top:calc(10px + env(safe-area-inset-top,0px)); }
+  .top-nav-btn{
+    padding:8px 6px; font-size:12px; font-weight:600; letter-spacing:0;
+    border:1px solid rgba(255,255,255,0.55);
+    background:rgba(255,255,255,0.58);
+    box-shadow:0 4px 18px rgba(26,23,20,0.08);
+  }
+  .top-nav-btn.primary{ border-color:var(--green); box-shadow:0 6px 18px rgba(30,57,42,0.28); }
+  .top-nav-btn svg{ width:12px; height:12px; }
+
+  /* Top bar v3: minimal text links + one green reserve button, right aligned */
+  .top-nav{
+    display:block; padding:calc(16px + env(safe-area-inset-top,0px)) 20px 34px;
+    background:linear-gradient(180deg, rgba(239,234,226,0.88) 0%, rgba(239,234,226,0.45) 55%, rgba(239,234,226,0) 100%);
+  }
+  .nav-pill{
+    display:flex; align-items:center; justify-content:flex-end; gap:18px;
+    padding:0; background:transparent; border:0; box-shadow:none;
+    -webkit-backdrop-filter:none; backdrop-filter:none; border-radius:0;
+  }
+  .nav-pill .top-nav-btn{
+    position:relative; flex:0 0 auto; padding:8px 2px;
+    border:0; background:transparent; box-shadow:none; border-radius:0;
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+    font-size:12.5px; font-weight:600; letter-spacing:0.02em; color:var(--ink-soft);
+  }
+  .nav-pill .top-nav-btn:not(.primary)::after{
+    content:''; position:absolute; left:2px; right:2px; bottom:5px; height:1px; background:currentColor; opacity:0.35;
+  }
+  .nav-pill .top-nav-btn.primary{
+    flex:0 0 auto; padding:9px 18px; border-radius:999px;
+    color:#fff; background:var(--green); letter-spacing:0.04em;
+    box-shadow:0 6px 16px rgba(30,57,42,0.28);
+  }
+  .nav-pill .top-nav-btn:not(.primary):active{ background:transparent; opacity:0.6; }
+
+  /* Shared section label: tiny caps + hairline */
+  .statement-eyebrow, .collection-head .eyebrow, .reserve .eyebrow{
+    font-size:10.5px; letter-spacing:0.34em; font-weight:500; color:var(--muted);
+    display:flex; align-items:center; gap:12px; margin-bottom:18px;
+  }
+  .statement-eyebrow{ justify-content:center; }
+  .statement-eyebrow::before, .statement-eyebrow::after,
+  .reserve .eyebrow::before, .reserve .eyebrow::after{
+    content:''; width:22px; height:1px; background:currentColor; opacity:.45;
+  }
+  .reserve .eyebrow{ justify-content:center; }
+  .collection-head .eyebrow::after{ content:''; flex:1; height:1px; background:var(--line); }
+
+  /* Brand story: airy, calm */
+  .statement{ padding:84px 8vw 76px; }
+  .statement-text{
+    font-size:17px; font-weight:500; line-height:2.05; letter-spacing:-0.01em; color:var(--ink-soft);
+  }
+
+  /* Collection */
+  .collection{ padding:0 0 72px; }
+  .collection-head{ padding:0 7vw 22px; }
+  .collection-head h2{ font-size:30px; font-weight:500; letter-spacing:-0.01em; }
+  .slider{ gap:16px; padding:4px 7vw 18px; }
+  .card{ background:transparent; box-shadow:none; border-radius:0; flex-basis:78vw; max-width:340px; }
+  .card-media{ border-radius:22px; overflow:hidden; aspect-ratio:1/1.02; }
+  .card-body{ padding:18px 4px 4px; }
+  .card-name{ font-size:15px; letter-spacing:0.26em; font-weight:600; margin-bottom:14px; }
+  .chip-row{ gap:8px; margin-bottom:6px; }
+  .chip{ width:22px; height:22px; padding:3px; border:1px solid transparent; }
+  .chip.is-active{ border-color:var(--ink); }
+  .chip.is-active::after{ content:none; }
+  .more-colors{ margin-left:auto; font-size:11.5px; font-weight:500; letter-spacing:0.02em; color:var(--muted); }
+  .card-link{
+    display:inline-flex; width:auto; min-height:44px; padding:10px 0 4px;
+    border:0; border-radius:0; gap:8px;
+    font-size:13px; font-weight:600; letter-spacing:0.02em;
+  }
+  .card-link::after{ content:'→'; transition:transform .25s ease; }
+  .card-link:hover::after, .card-link:active::after{ transform:translateX(4px); }
+  .dots{ gap:6px; padding-top:14px; }
+  .dots span{ width:5px; height:5px; background:rgba(26,23,20,0.16); transition:all .3s ease; }
+  .dots span.is-active{ width:20px; border-radius:999px; background:var(--ink); transform:none; }
+
+  /* Reservation */
+  .reserve{ padding:84px 8vw 56px; }
+  .reserve h2{ font-size:30px; font-weight:500; letter-spacing:-0.01em; }
+  .reserve-sub{ font-size:13.5px; color:var(--ink-soft); }
+  .reserve-cta{ margin-top:30px; min-height:56px; font-size:14.5px; box-shadow:0 14px 28px rgba(26,23,20,0.18); }
+  .reserve-meta{
+    margin-top:36px; padding:0; background:transparent; border-radius:0; gap:0;
+    border-top:1px solid var(--line);
+  }
+  .reserve-meta .row2{ padding:15px 0; border-bottom:1px solid var(--line); font-size:13px; align-items:baseline; }
+  .reserve-meta .row2 b{ width:64px; font-size:11px; font-weight:500; letter-spacing:0.14em; color:var(--muted); }
+  .reserve-meta .row2 span{ color:var(--ink-soft); }
+  .reserve-links{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:28px; }
+  .home-cta, .kakao-cta{
+    margin-top:0; min-height:48px; padding:12px 10px;
+    border:1px solid rgba(26,23,20,0.18); font-size:13px; font-weight:600;
+  }
+  .home-cta svg{ display:none; }
+
+  footer{ padding:30px 8vw calc(36px + env(safe-area-inset-bottom)); border-top:0; }
+  footer .mark{ letter-spacing:0.32em; font-size:13px; }
+
+  /* Bottom sheet */
+  .sheet{ border-radius:26px 26px 0 0; padding-top:12px; }
+  .sheet-actions a{ min-height:50px; }
+
+  /* Scroll reveal (only when JS is running) */
+  .js .reveal{ opacity:0; transform:translateY(22px); transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .js .reveal.is-in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion:reduce){ .js .reveal{ opacity:1; transform:none; transition:none; } }
+
   @media (min-width:431px){
     body{ max-width:430px; margin:0 auto; }
     /* vw units follow the full window on desktop; pin everything to the 430px column */
-    .top-nav { left:calc(50% - 215px); right:calc(50% - 215px); padding:12px 16px; }
+    .top-nav { left:calc(50% - 215px); right:calc(50% - 215px); }
     .intro-logo { font-size:24px; }
   }
 </style>
@@ -385,18 +502,11 @@
 
 <!-- Sticky top nav -->
 <nav class="top-nav">
-  <a href="https://booking.naver.com/booking/13/bizes/1664963" target="_blank" rel="noopener" class="top-nav-btn primary">
-    <svg viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 6.5h14" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 1.5v3M12.5 1.5v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-    쇼룸 예약
-  </a>
-  <a href="https://pf.kakao.com/_lpfxixl/chat" target="_blank" rel="noopener" class="top-nav-btn">
-    <svg viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 4.47 2 7.5c0 1.9 1.12 3.58 2.84 4.63L4 16l3.5-2.04c.49.08.99.12 1.5.12 3.87 0 7-2.47 7-5.5S12.87 2 9 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-    실시간 상담
-  </a>
-  <a href="https://mav-studio.co.kr/board/product2/list.html?board=no_4" target="_blank" rel="noopener" class="top-nav-btn">
-    <svg viewBox="0 0 18 18" fill="none"><path d="M9 1.5l2.1 4.4 4.85.7-3.5 3.42.83 4.83L9 12.6l-4.28 2.25.83-4.83L2.05 6.6l4.85-.7L9 1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-    REVIEW
-  </a>
+  <div class="nav-pill">
+    <a href="https://pf.kakao.com/_lpfxixl/chat" target="_blank" rel="noopener" class="top-nav-btn">상담</a>
+    <a href="https://mav-studio.co.kr/board/product2/list.html?board=no_4" target="_blank" rel="noopener" class="top-nav-btn">리뷰</a>
+    <a href="https://booking.naver.com/booking/13/bizes/1664963" target="_blank" rel="noopener" class="top-nav-btn primary">예약</a>
+  </div>
 </nav>
 
 <section class="hero">
@@ -549,14 +659,16 @@
     <div class="row2"><b>전화</b><span>02. 584. 8884</span></div>
   </div>
 
+  <div class="reserve-links">
   <a href="https://mav-studio.co.kr/index.html" target="_blank" rel="noopener" class="home-cta">
     <svg viewBox="0 0 18 18" fill="none"><path d="M2 8.5L9 2.5l7 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.8 7.5V15a.6.6 0 0 0 .6.6H13.6a.6.6 0 0 0 .6-.6V7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span>공식 홈페이지 바로가기</span>
+    <span>공식 홈페이지</span>
   </a>
 
   <a href="https://pf.kakao.com/_lpfxixl/chat" target="_blank" rel="noopener" class="kakao-cta">
-    <span>💬 실시간 카톡 상담하기</span>
+    <span>카카오톡 상담</span>
   </a>
+  </div>
 </section>
 
 <footer>
@@ -578,9 +690,30 @@
 
 <script>
   // Force fresh version via cache-busting param
-  if (location.search !== '?v=9') {
-    location.replace(location.pathname + '?v=9');
+  if (location.search !== '?v=10') {
+    location.replace(location.pathname + '?v=10');
   }
+
+  // ---- Scroll reveal: gentle fade-up for sections below the hero ----
+  (function() {
+    document.documentElement.classList.add('js');
+    const targets = document.querySelectorAll(
+      '.statement > *, .collection-head, .slider, .dots, .reserve > *, footer'
+    );
+    const stagger = new Map();
+    targets.forEach(el => {
+      el.classList.add('reveal');
+      const p = el.parentElement;
+      const n = (stagger.get(p) || 0);
+      stagger.set(p, n + 1);
+      el.style.transitionDelay = Math.min(n, 5) * 90 + 'ms';
+    });
+    if (!('IntersectionObserver' in window)) { targets.forEach(el => el.classList.add('is-in')); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    targets.forEach(el => io.observe(el));
+  })();
 
   // ---- Cinematic intro ----
   (function() {
@@ -602,6 +735,42 @@
       intro.classList.add('is-hidden');
       document.body.style.overflow = '';
     }, 2600);
+  })();
+
+
+  // ---- Hero sound: try autoplay with audio; if the browser blocks it,
+  //      stay muted and turn the sound on at the visitor's first tap/key ----
+  (function() {
+    const video = document.querySelector('.hero-video');
+    if (!video) return;
+    const events = ['pointerdown', 'touchend', 'click', 'keydown'];
+    let done = false;
+
+    function finish() {
+      done = true;
+      events.forEach(e => window.removeEventListener(e, unmuteOnGesture, true));
+    }
+    function unmuteOnGesture() {
+      if (done) return;
+      video.muted = false;
+      video.volume = 1;
+      const p = video.play();
+      if (p && p.catch) p.catch(() => { video.muted = true; });
+      finish();
+    }
+
+    // 1) Try right away with sound
+    video.muted = false;
+    video.volume = 1;
+    const attempt = video.play();
+    if (attempt && attempt.then) {
+      attempt.then(finish).catch(() => {
+        // 2) Blocked: fall back to muted autoplay + unmute on first gesture
+        video.muted = true;
+        video.play().catch(() => {});
+        events.forEach(e => window.addEventListener(e, unmuteOnGesture, true));
+      });
+    }
   })();
 
   // ---- Top nav: hide on scroll down, show on scroll up ----
